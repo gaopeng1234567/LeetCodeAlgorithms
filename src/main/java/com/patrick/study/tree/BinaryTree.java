@@ -3,6 +3,10 @@ package com.patrick.study.tree;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * ｜                 ,;,,;;
  * ｜               ,;;'()     风
@@ -15,31 +19,33 @@ import lombok.Data;
  * ｜   (_\       (_\          希
  * @author: 城管丶希
  * @date: Created in 2021/4/21 4:41 下午
- * @desc:
+ * @desc: 二叉树的遍历
  * @motto: Keep It Simple and Stupid, KISS
  */
 @Data
 @AllArgsConstructor
 class MyTreeNode {
 
-	private char data;
+	private String data;
 	private MyTreeNode left;
 	private MyTreeNode right;
 
 }
 
 public class BinaryTree {
+	private String[] myTreeNodes = new String[100];
+	private ArrayList<String> arrayList = new ArrayList<>(10);
 
 	public static void main(String[] args) {
-		MyTreeNode D = new MyTreeNode('D', null, null);
-		MyTreeNode H = new MyTreeNode('H', null, null);
-		MyTreeNode K = new MyTreeNode('K', null, null);
-		MyTreeNode C = new MyTreeNode('C', D, null);
-		MyTreeNode G = new MyTreeNode('G', H, K);
-		MyTreeNode B = new MyTreeNode('B', null, C);
-		MyTreeNode F = new MyTreeNode('F', G, null);
-		MyTreeNode E = new MyTreeNode('E', null, F);
-		MyTreeNode A = new MyTreeNode('A', B, E);
+		MyTreeNode D = new MyTreeNode("D", null, null);
+		MyTreeNode H = new MyTreeNode("H", null, null);
+		MyTreeNode K = new MyTreeNode("K", null, null);
+		MyTreeNode C = new MyTreeNode("C", D, null);
+		MyTreeNode G = new MyTreeNode("G", H, K);
+		MyTreeNode B = new MyTreeNode("B", null, C);
+		MyTreeNode F = new MyTreeNode("F", G, null);
+		MyTreeNode E = new MyTreeNode("E", null, F);
+		MyTreeNode A = new MyTreeNode("A", B, E);
 
 		BinaryTree binaryTree = new BinaryTree();
 		System.out.println("前");
@@ -50,6 +56,9 @@ public class BinaryTree {
 		System.out.println();
 		System.out.println("后");
 		binaryTree.post(A);
+		System.out.println();
+		System.out.println("层序遍历");
+		binaryTree.levelForQueue(A);
 
 	}
 
@@ -87,7 +96,29 @@ public class BinaryTree {
 		print(root);
 	}
 
-	public void level(MyTreeNode treeNode) {
+	public void levelForQueue(MyTreeNode treeNode) {
+		Queue<MyTreeNode> queue = new LinkedList<>();
+		queue.offer(treeNode);
+		while (!queue.isEmpty()) {
+			MyTreeNode poll = queue.poll();
+			print(poll);
+			if (poll.getLeft() != null) {
+				queue.offer(poll.getLeft());
+			}
+			if (poll.getRight() != null) {
+				queue.offer(poll.getRight());
+			}
+		}
+	}
 
+	public void levelForArray(MyTreeNode treeNode, int i) {
+//		myTreeNodes[i] = treeNode.getData();
+		arrayList.add(i, treeNode.getData());
+		if (treeNode.getLeft() != null) {
+			levelForArray(treeNode.getLeft(), 2 * i);
+		}
+		if (treeNode.getRight() != null) {
+			levelForArray(treeNode.getRight(), 2 * i + 1);
+		}
 	}
 }
