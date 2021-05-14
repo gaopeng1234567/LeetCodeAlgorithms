@@ -2,6 +2,8 @@ package com.patrick.huawei;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * ｜                 ,;,,;;
@@ -28,8 +30,9 @@ public class Demo3 {
 			}
 		});
 		for (int i = 0; i < count.length; i++) {
-			
+
 		}
+		Stream.of(str.split("")).collect(Collectors.groupingBy(String::toString, Collectors.counting()));
 		System.out.println(count);
 		String[] words = new String[]{"cat", "bt", "hat", "tree"};
 		String chars = "atach";

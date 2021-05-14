@@ -1,6 +1,9 @@
 package com.patrick.algorithms;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.Character.*;
 
@@ -24,9 +27,9 @@ import static java.lang.Character.*;
  */
 public class 字符串解码 {
 	public static void main(String[] args) {
-		String str = "3[z]2[2[y]pq4[2[jk]e1[f]]]ef";
+		String str = "3[az[c]]";
 //		"zzzyypqjkjkefjkjkefjkjkefjkjkefyypqjkjkefjkjkefjkjkefjkjkefef"
-		System.out.println(decodeString(str));
+		System.out.println(decodeString1(str));
 	}
 
 	public static String decodeString(String s) {
@@ -68,37 +71,27 @@ public class 字符串解码 {
 	}
 
 	public static String decodeString1(String target) {
-		Stack<String> result = new Stack<>();
-		String[] split = target.split("");
-		for (int i = 0; i < split.length; i++) {
-			StringBuilder temp = new StringBuilder();
-			if (!split[i].equals("[") && !split[i].equals("]")) { //放入除[]的符号
-				if (i + 1 < split.length && split[i + 1].equals("]")) { //如果这个元素的下一个是]则进行计算
-					String pop = result.pop();
-					if (Character.isDigit(pop.charAt(0))) { //是数字相乘
-						for (int j = 0; j < Integer.parseInt(pop); j++) {
-							temp.append(split[i]);
-						}
-						result.push(temp.toString());
-					} else
-					//不是数字直接相加
-					{
-						String str = pop + split[i];
-						//然后判断上一个是否为数字
-						if (Character.isDigit(result.peek().charAt(0))) {
-							String pop1 = result.pop();
-							for (int j = 0; j < Integer.parseInt(pop1); j++) {
-								temp.append(str);
-							}
-						}
-						result.push(temp.toString());
-					}
-				} else
-					//直接放入
-					result.push(split[i]);
+		StringBuilder res = new StringBuilder();
+		int multi = 0;
+		LinkedList<Integer> stack_multi = new LinkedList<>();
+		LinkedList<String> stack_res = new LinkedList<>();
+		for(Character c : target.toCharArray()) {
+			if(c == '[') {
+				stack_multi.addLast(multi);
+				stack_res.addLast(res.toString());
+				multi = 0;
+				res = new StringBuilder();
 			}
+			else if(c == ']') {
+				StringBuilder tmp = new StringBuilder();
+				int cur_multi = stack_multi.removeLast();
+				for(int i = 0; i < cur_multi; i++) tmp.append(res);
+				res = new StringBuilder(stack_res.removeLast() + tmp);
+			}
+			else if(c >= '0' && c <= '9') multi = multi * 10 + Integer.parseInt(c + "");
+			else res.append(c);
 		}
-		return result.get(0).toString() + result.get(1);
+		return res.toString();
 	}
 
 }

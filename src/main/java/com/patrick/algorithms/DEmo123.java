@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
  */
 public class DEmo123 {
 	public static void main(String[] args) {
-		System.out.println(test("()"));
+		System.out.println(test1("(]"));
 	}
 
 	public static boolean test(String s) {
@@ -35,7 +35,7 @@ public class DEmo123 {
 					chars.push(x);//O(1)
 					break;
 				case '}':
-					if(chars.isEmpty())
+					if (chars.isEmpty())
 						return false;
 					top = chars.pop();//O(1)
 					if (top == null) return false;
@@ -45,7 +45,7 @@ public class DEmo123 {
 						return false;
 					}
 				case ')':
-					if(chars.isEmpty())
+					if (chars.isEmpty())
 						return false;
 					top = chars.pop();//O(1)
 					if (top == null) return false;
@@ -55,7 +55,7 @@ public class DEmo123 {
 						return false;
 					}
 				case ']':
-					if(chars.isEmpty())
+					if (chars.isEmpty())
 						return false;
 					top = chars.pop();//O(1)
 					if (top == null) return false;
@@ -69,5 +69,31 @@ public class DEmo123 {
 			}
 		}
 		return chars.isEmpty();
+	}
+
+	public static boolean test1(String s) {
+		char[] chars = s.toCharArray();
+		Stack<Character> charsStack = new Stack<>();
+		for (char aChar : chars) {
+			if ('(' == aChar || '{' == aChar || '[' == aChar) {
+				charsStack.push(aChar);
+			} else {
+				if (charsStack.isEmpty()) {
+					return false;
+				} else {
+					Character pop = charsStack.pop();
+					if (']' == aChar && '[' != pop) {
+						return false;
+					}
+					if ('}' == aChar && '{' != pop) {
+						return false;
+					}
+					if (')' == aChar && '(' != pop) {
+						return false;
+					}
+				}
+			}
+		}
+		return charsStack.isEmpty();
 	}
 }

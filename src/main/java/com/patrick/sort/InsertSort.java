@@ -3,7 +3,7 @@ package com.patrick.sort;
 /**
  * @author patrick
  * @date 2021/3/24 10:45 上午
- * @Des 插入排序
+ * @Des 插入排序 这他吗写的是啥玩意儿。。。看v包下的，正版
  * 最簡單的事是堅持，最難的事還是堅持
  */
 public class InsertSort {
